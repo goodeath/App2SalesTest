@@ -7,6 +7,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class UserComponent implements OnInit {
 
+  public data = {
+    name: '',
+    email: '',
+    password: '',
+    confirm_password: '',
+  }
   constructor() { }
 
   ngOnInit() {
