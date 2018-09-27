@@ -7,9 +7,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AudioComponent implements OnInit {
 
+  public file;
   constructor() { }
 
   ngOnInit() {
   }
 
+  public watchFile(event){
+    console.log(event);
+  }
+  public save(){
+    console.log(this.file);
+  }
 }
