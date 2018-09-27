@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { FireDbService } from './fire-db.service'
 import { FireDbAuthService } from './fire-db-auth.service'
 import { Observable } from 'rxjs';
+import * as moment from 'moment';
 @Injectable({
   providedIn: 'root'
 })
@@ -14,12 +15,14 @@ export class UserService {
       users: '/users',
     }
 
-    public add(data):void{
-      this.auth.createUser(data.email,data.password).then(res => {
+    public add(data){
+      data.date_created = moment().format('DD/MM/YYYY HH:mm:ss');
+      return this.auth.createUser(data.email,data.password).then(res => {
          console.log(res);
          let uid = res.user.uid;
          let fullUrl = this.url.users + '/' + uid;
          this.db.set(fullUrl,data);
+        //  return true;
       }).catch(res=>{
         console.log(res);
       })
