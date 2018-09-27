@@ -11,8 +11,26 @@ export class FireDbService {
      
   ) { }
 
-  public insert(data){
-    this.db.object('users/').set(data);
+  public insert(url,data){
+    let list = this.db.list(url);
+    list.push(data);
+  }
+
+  public set(url,data){
+    this.db.object(url).set(data);
+  }
+
+  public listWatch(url: string){
+    return this.db.list(url);
+    // this.db.list(url).snapshotChanges().pipe(
+    //   res => {
+    //     console.log(res);
+    //     res.subscribe( obs => {
+    //         console.log(obs);
+    //     })
+    //     return res
+    //   }
+    // )
   }
 
   ngInit(){
