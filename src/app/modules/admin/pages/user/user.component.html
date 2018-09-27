@@ -4,25 +4,25 @@
   <form>
  
     <div class="form-group">
-        <input type="text" class="form-control" placeholder="Nome do usuário">
+        <input type="text" class="form-control" name="name" [(ngModel)]="data.name" placeholder="Nome do usuário">
     </div>
     <div class="form-group">
-        <input type="text" class="form-control" placeholder="E-mail">
+        <input type="text" class="form-control" name="email" [(ngModel)]="data.email" placeholder="E-mail">
     </div>
     
     <div class="form-group">
       <div class="row">
         <div class="col col-sm-6">
-            <input type="text" class="form-control" placeholder="Senha">
+            <input type="text" class="form-control" name="password" [(ngModel)]="data.password" placeholder="Senha">
         </div>
         <div class="col col-sm-6">
-            <input type="text" class="form-control" placeholder="Repetir Senha">
+            <input type="text" class="form-control" name="confirm_password" [(ngModel)]="data.confirm_password" placeholder="Repetir Senha">
         </div>
       </div>        
     </div>
   
     <div class="form-group">
-        <button type="button" (click)="save()" class="btn-primary float-right">Salvar</button>
+        <button type="button" (click)="create()" class="btn-primary float-right">Salvar</button>
     </div>
     
   </form>
@@ -39,8 +39,18 @@
         <th>Ação</th>
       </thead>
       <tbody>
-        <tr>
-          <td>Alex Anderson</td>
+        <tr *ngFor="let user of users">
+          <td>{{user.date_created}}</td>
+          <td>{{user.name}}</td>
+          <td>{{user.email}}</td>
+          <td>
+            <!-- <a href="#"> -->
+              <i class="fa fa-window-close"></i>&nbsp;
+            <!-- </a> -->
+            <!-- <a href="#"> -->
+              <i class="fa fa-edit"></i>
+            <!-- </a> -->
+          </td>
         </tr>
       </tbody>
     </table>

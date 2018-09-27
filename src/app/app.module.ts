@@ -20,6 +20,7 @@ import { SidebarComponent } from './modules/admin/components/sidebar/sidebar.com
 import { FooterComponent } from './modules/admin/components/footer/footer.component';
 import { MainComponent } from './modules/admin/template/main/main.component';
 
+
 @NgModule({
   declarations: [
     AppComponent,
