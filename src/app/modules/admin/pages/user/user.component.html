@@ -39,8 +39,11 @@
         <th>Ação</th>
       </thead>
       <tbody>
-        <tr>
-          <td>Alex Anderson</td>
+        <tr *ngFor="let user of users">
+          <td>00000</td>
+          <td>{{user.name}}</td>
+          <td>{{user.email}}</td>
+          <td>Excluir</td>
         </tr>
       </tbody>
     </table>

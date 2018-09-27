@@ -30,6 +30,18 @@ export class FireDbAuthService {
       });
     }
 
+    public createUser(email: string, password: string){
+      return this.db.auth.createUserWithEmailAndPassword(email,password).then(
+        res=>{
+          console.log(res);
+          return res;
+        }
+      ).catch(res=>{
+        console.log(res);
+        return res;
+      });
+    }
+
     public logout():void{
       this.guest = true;
       this.db.auth.signOut();
