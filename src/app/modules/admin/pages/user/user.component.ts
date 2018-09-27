@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-
+import { UserService } from './../../../../shared/services/user.service';
 @Component({
   selector: 'app-user',
   templateUrl: './user.component.html',
@@ -13,9 +13,12 @@ export class UserComponent implements OnInit {
     password: '',
     confirm_password: '',
   }
-  constructor() { }
+  constructor(private user: UserService) { }
 
   ngOnInit() {
   }
 
+  public create(){
+    this.user.add(this.data);
+  }
 }

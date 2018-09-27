@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AngularFireModule } from 'angularfire2/index';
-import { AngularFireAuth } from 'angularfire2/auth';
+import { AngularFireDatabase } from 'angularfire2/database';
 import { environment } from './../../../environments/environment';
 @Injectable({
   providedIn: 'root'
@@ -8,11 +7,13 @@ import { environment } from './../../../environments/environment';
 export class FireDbService {
 
   constructor(
-      private db: AngularFireModule, 
+      private db: AngularFireDatabase, 
      
   ) { }
 
-  public authenticate(username: string, password: string){}
+  public insert(data){
+    this.db.object('users/').set(data);
+  }
 
   ngInit(){
     // this.db.initializeApp(environment.firebase);
