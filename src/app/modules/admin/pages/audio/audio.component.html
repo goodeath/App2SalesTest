@@ -10,7 +10,7 @@
             <input type="text" class="form-control" placeholder="Nome do Arquivo">
         </div>
         <div class="col col-sm-6">
-            <input type="file"   placeholder="Repetir Senha">
+            <input type="file" name="file" (change)="watchFile($event)" accept=".mp3" placeholder="Repetir Senha">
         </div>
       </div>        
     </div>
