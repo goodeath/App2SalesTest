@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TicketService } from './../../../../shared/services/ticket.service';
+import * as _ from 'lodash';
 @Component({
   selector: 'app-ticket',
   templateUrl: './ticket.component.html',
@@ -13,9 +14,22 @@ export class TicketComponent implements OnInit {
   };
   public benefitName: string;
   public benefits = [];
-  public benefit = [];
+  public scheduleItems = [];
+  public scheduleData = {};
   public tickets: any[];
+  private isCreated: boolean = false;
+  private activeMenu: number = 1;
+  private key: string;
+
   constructor(private ticket: TicketService) { }
+
+  public getActiveMenu():number{
+    return this.activeMenu;
+  }
+
+  public getIsCreated():boolean{
+    return this.isCreated;
+  }
 
   ngOnInit() {
     this.list();
@@ -57,15 +71,26 @@ export class TicketComponent implements OnInit {
       
     }
 
+    private clear(){
+      this.benefits = [];
+      this.data = {
+        name:'',
+        initial_value: '',
+        final_value: ''
+      }
+    }
+
     public create(){
-      this.ticket.create(this.data.name,this.data.initial_value,this.data.final_value,this.benefits).then(res=>{
-        this.benefits = [];
-        this.data = {
-          name:'',
-          initial_value: '',
-          final_value: ''
-        }
+      this.ticket.create(this.data.name,this.data.initial_value,this.data.final_value,this.benefits).then(ref=>{
+        console.log(ref);
+        this.isCreated = true;
+        this.key = ref.key;
+        this.clear();
       });
+    }
+
+    public choose(menu: number){
+      this.activeMenu = menu;
     }
 
     public list(){
@@ -74,5 +99,42 @@ export class TicketComponent implements OnInit {
         this.tickets = res;
         console.log(res);
       });
+    }
+
+
+    /**
+     * Set properties to create new ticket.
+     */
+    public newTicket(): void{
+      this.setNewTicketWindow();
+    }
+
+    public schedule(): void {
+      this.setScheduleWindow()
+    }
+
+    public setScheduleWindow(){
+      this.choose(2);
+      this.isCreated = true;
+    }
+
+    public setNewTicketWindow(){
+      this.choose(1);
+      this.isCreated = false;
+      this.key = null;
+    }
+
+    public addSchedule(){
+      this.scheduleItems.push(this.scheduleData);
+      this.scheduleData = {};
+    }
+
+    public createSchedule(){
+      console.log(this.scheduleItems);
+      let groupByDay = _.groupBy(this.scheduleItems,'day');
+      this.ticket.createSchedule(this.key,groupByDay).then(res=>{
+        this.setNewTicketWindow();
+      });
+      console.log(groupByDay);
     }
 }

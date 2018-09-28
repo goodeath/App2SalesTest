@@ -34,6 +34,12 @@ export class TicketService {
     })
   }
 
+  public createSchedule(ticketKey: string, data){
+    return this.db.set(this.url.schedule + '/' + ticketKey, data).then(res=>{
+      return res;
+    })
+  }
+
   public list(){
     let data = this.db.listWatch(this.url.ticket).valueChanges();
     return data;
