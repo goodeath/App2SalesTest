@@ -8,10 +8,10 @@ export class FireDbStorageService {
 
   constructor(private db: AngularFireStorage) { }
 
-  public upload (name: string, file) {
+  public upload (name: string, file): Promise<any> {
     let ref = this.db.ref('audios/' + name + '.mp3');
-    ref.put(file).then((snapshot)=>{
-      console.log(snapshot);
+    return ref.put(file).then((snapshot)=>{
+      return snapshot;
     })
 
   }

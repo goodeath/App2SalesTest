@@ -13,6 +13,7 @@ import { AudioComponent } from './pages/audio/audio.component';
 import { FireDbAuthService } from './../../shared/services/fire-db-auth.service';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFireDatabase } from 'angularfire2/database';
+import { AngularFireStorage } from 'angularfire2/storage';
 
 @NgModule({
   imports: [
@@ -31,7 +32,8 @@ import { AngularFireDatabase } from 'angularfire2/database';
   providers: [
     AngularFireDatabase,
     FireDbAuthService,
-    AngularFireAuth
+    AngularFireAuth,
+    AngularFireStorage
   ]
 })
 export class AdminModule { }
