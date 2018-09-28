@@ -20,6 +20,10 @@ export class FireDbService {
     return this.db.object(url).set(data);
   }
 
+  public delete(url){
+    return this.db.object(url).remove();
+  }
+
   public listWatch(url: string){
     return this.db.list(url);
     // this.db.list(url).snapshotChanges().pipe(

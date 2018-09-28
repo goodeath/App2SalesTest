@@ -15,6 +15,10 @@ const routes: Routes = [
     {
         path: 'Usuarios',
         component: UserComponent,data: {title:'Usuários'}
+    },
+    {
+        path: 'Usuarios/Editar/:id',
+        component: UserComponent,data: {title:'Usuários'}
     }, 
     {
         path: 'Audios',
