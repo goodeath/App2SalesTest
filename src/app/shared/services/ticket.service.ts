@@ -17,6 +17,8 @@ export class TicketService {
   }
 
   private tickets;
+  private schedules;
+
 
   constructor(private db: FireDbService) { }
 
@@ -34,7 +36,27 @@ export class TicketService {
     })
   }
 
+  public update(uid:string, name: string, initial_value: string, final_value: string, benefits: any[]){
+ 
+    let basePath = this.url.ticket + '/' + uid + '/';
+    let uris = {};
+    uris[basePath + 'name'] = name;
+    uris[basePath + 'initial_value'] = initial_value;
+    uris[basePath + 'final_value'] = final_value;
+    uris[basePath + 'benefits'] = benefits;
+    
+    return this.db.update(uris).then(res=>{
+      return res;
+    })
+  }
+
   public createSchedule(ticketKey: string, data){
+    return this.db.set(this.url.schedule + '/' + ticketKey, data).then(res=>{
+      return res;
+    })
+  }
+
+  public updateSchedule(ticketKey: string, data){
     return this.db.set(this.url.schedule + '/' + ticketKey, data).then(res=>{
       return res;
     })
@@ -45,11 +67,34 @@ export class TicketService {
     return data;
   }
 
+  public listSchedule(uid: string){
+    let data2 = this.db.listWatch(this.url.schedule + '/' + uid).valueChanges();
+    return data2;
+  }
+
   public getTickets(): Observable<any[]> {
     if(!this.tickets){
       this.tickets = this.list();
     }
     return this.tickets;
+  }
+
+  public getSchedule(uid: string): Observable<any[]> {
+    if(!this.schedules){
+      this.schedules = this.listSchedule(uid);
+    }
+    return this.schedules;
+  }
+
+  public rm(uid: string){
+    let uris = {};
+    let fullPath = this.url.ticket + '/' + uid;
+    
+    let schedulePath = this.url.schedule + '/' + uid;
+    uris[fullPath] = null;
+    uris[schedulePath] = null;    
+
+    return this.db.update(uris);
   }
 
 }

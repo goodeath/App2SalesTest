@@ -1,5 +1,6 @@
 <mk-box *ngIf="getActiveMenu() == 1 && !getIsCreated()">
-    <h5> Cadastrar </h5>
+    
+    <h4>Cadastrar</h4> 
     <hr>
     <form>
    
@@ -17,34 +18,60 @@
           </div>
         </div>        
       </div>
+      <hr>
       <h4>Benefícios</h4> 
       
       <div class="form-group" *ngFor="let item of benefits;  index as i">
         <div class="row" >
-          <div class="col col-sm-6">
-              <p>{{item.name}}</p>
+          <div class="col col-sm-4">&nbsp;</div>
+          <div class="col col-sm-4">
+              <div class="col col-sm-6 text-center">
+                <span>{{item.name}}</span>
+              </div>
+              <div class="col col-sm-6">
               
-              
+                  <i class=" fa fa-window-close" (click)="remove(item,i)" style="cursor:pointer;font-size:17px;"></i>
+              </div>    
           </div>
-          <div class="col col-sm-2">
-              
-              <i class=" fa fa-window-close" (click)="remove(item,i)" style="cursor:pointer;font-size:30px;"></i>
-          </div>
+          <div class="col col-sm-4">&nbsp;</div>
+          
        
         </div>
            
       </div>
       <div class="form-group">
           <div class="row">
-              <div class="col col-sm-6">
+              <div class="col col-sm-4">
+                &nbsp;
+              </div>
+              <div class="col col-sm-4">
                   <input type="text" class="form-control"  name="field[]" [(ngModel)]="benefitName"  placeholder="Benefício">
-                </div>
+              </div>
+              <div class="col col-sm-4">
+                &nbsp;
+              </div>
+          </div>
+          <div class="row">
+              <div class="col col-sm-4">
+                &nbsp;
+              </div>
+              <div class="col col-sm-4">
+                  <div class="col col-sm-4">&nbsp;</div>
+                  <div class="col col-sm-4">
+                      <br>
+                      <button type="button" class="btn btn-primary" (click)="addBenefit()">Adicionar</button> 
+                  </div>
+                  <div class="col col-sm-4">&nbsp;</div>
+              </div>
+              <div class="col col-sm-4">
+                &nbsp;
+              </div>
           </div>
           
-        <button type="button" class="btn-primary" (click)="addBenefit()">Adicionar</button> 
+        
       </div>
-      <div class="form-group">
-          <button type="button" (click)="create()" class="btn-primary float-right">Salvar</button>
+      <div class="form-group pull-right">
+          <button type="button" (click)="create()" class="btn btn-primary ">Salvar</button>
       </div>
       
     </form>
@@ -159,7 +186,7 @@
     
   </mk-box>
 
-  <mk-box>
+  <mk-box *ngIf="isNew">
       <h5> Relatório de Ingressos </h5>
       <hr>
       <table class="table">
@@ -178,10 +205,10 @@
                 <td>R$ {{item.final_value}}</td>
                 <td>
                   <!-- <a href="#"> -->
-                    <i class="fa fa-window-close"></i>&nbsp;
+                    <i class="fa fa-window-close" (click)="rm(item.key)" style="cursor:pointer"></i>&nbsp;
                   <!-- </a> -->
                   <!-- <a href="#"> -->
-                    <i class="fa fa-edit"></i>
+                      <a routerLink="/Admin/Ingressos/Editar/{{item.key}}"><i class="fa fa-edit" style="color:black"></i></a>
                   <!-- </a> -->
                 </td>
               </tr>

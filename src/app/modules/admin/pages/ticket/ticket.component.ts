@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { TicketService } from './../../../../shared/services/ticket.service';
 import * as _ from 'lodash';
+import { ToastrService } from 'ngx-toastr';
+import { ActivatedRoute, Router } from '@angular/router';
+
 @Component({
   selector: 'app-ticket',
   templateUrl: './ticket.component.html',
@@ -12,6 +15,8 @@ export class TicketComponent implements OnInit {
     initial_value: '',
     final_value: '',
   };
+  public isNew: boolean = true;
+  public id: string;
   public benefitName: string;
   public benefits = [];
   public scheduleItems = [];
@@ -21,7 +26,12 @@ export class TicketComponent implements OnInit {
   private activeMenu: number = 1;
   private key: string;
 
-  constructor(private ticket: TicketService) { }
+  constructor(
+    private ticket: TicketService, 
+    private toastr: ToastrService,
+    private route: ActivatedRoute,
+    private router: Router
+  ) { }
 
   public getActiveMenu():number{
     return this.activeMenu;
@@ -32,6 +42,11 @@ export class TicketComponent implements OnInit {
   }
 
   ngOnInit() {
+    let id = this.route.snapshot.paramMap.get('id');
+    if(id){
+      this.isNew = false;
+      this.id = id;
+    }
     this.list();
   }
     copy(str1,str2){
@@ -42,6 +57,10 @@ export class TicketComponent implements OnInit {
     }
 
     public addBenefit(){
+      if(!this.benefitName){
+        this.toastr.warning('O benefício está vazio');
+        return;
+      }
       // let benef = JSON.parse(JSON.stringify(this.benefits));
       // let s = benef[0].name;
       let len = this.benefits.length;
@@ -81,12 +100,21 @@ export class TicketComponent implements OnInit {
     }
 
     public create(){
-      this.ticket.create(this.data.name,this.data.initial_value,this.data.final_value,this.benefits).then(ref=>{
-        console.log(ref);
-        this.isCreated = true;
-        this.key = ref.key;
-        this.clear();
-      });
+      if(this.isNew){
+        this.ticket.create(this.data.name,this.data.initial_value,this.data.final_value,this.benefits).then(ref=>{
+          console.log(ref);
+          this.isCreated = true;
+          this.key = ref.key;
+          this.clear();
+        });
+      } else {
+        this.ticket.update(this.id, this.data.name,this.data.initial_value,this.data.final_value,this.benefits).then(ref=>{
+          console.log(ref);
+          this.isCreated = true;
+          // this.key = ref.key;
+          this.clear();
+        });
+      }
     }
 
     public choose(menu: number){
@@ -97,9 +125,26 @@ export class TicketComponent implements OnInit {
       console.log(this.ticket.getTickets());
       this.ticket.getTickets().subscribe(res=>{
         this.tickets = res;
+        if(!this.isNew){
+          this.data = _.find(this.tickets,(o)=>o.key == this.id)
+          this.benefits = this.data['benefits'];
+        }
         console.log(res);
       });
     }
+
+    public listSchedule(){
+      console.log(this.ticket.getSchedule(this.id));
+      this.ticket.getSchedule(this.id).subscribe(res=>{
+        
+        if(!this.isNew){
+          this.scheduleItems = _.flattenDeep(res);
+        }
+        console.log(res,this.scheduleItems);
+      });
+    }
+
+    
 
 
     /**
@@ -107,6 +152,9 @@ export class TicketComponent implements OnInit {
      */
     public newTicket(): void{
       this.setNewTicketWindow();
+      if(!this.isNew){
+        this.router.navigate(['/Admin/Ingressos']);
+      }
     }
 
     public schedule(): void {
@@ -116,6 +164,9 @@ export class TicketComponent implements OnInit {
     public setScheduleWindow(){
       this.choose(2);
       this.isCreated = true;
+      if(!this.isNew){
+        this.listSchedule();
+      }
     }
 
     public setNewTicketWindow(){
@@ -132,9 +183,23 @@ export class TicketComponent implements OnInit {
     public createSchedule(){
       console.log(this.scheduleItems);
       let groupByDay = _.groupBy(this.scheduleItems,'day');
-      this.ticket.createSchedule(this.key,groupByDay).then(res=>{
-        this.setNewTicketWindow();
-      });
+      if(this.isNew){
+        this.ticket.createSchedule(this.key,groupByDay).then(res=>{
+          this.setNewTicketWindow();
+        });
+      } else {
+        
+        this.ticket.updateSchedule(this.id,groupByDay).then(res=>{
+          this.setNewTicketWindow();
+          this.router.navigate(['/Admin/Ingressos']);
+        })
+      }
       console.log(groupByDay);
+    }
+
+    public rm(uid: string){
+      this.ticket.rm(uid).then(res=>{
+        console.log(res);
+      })
     }
 }
