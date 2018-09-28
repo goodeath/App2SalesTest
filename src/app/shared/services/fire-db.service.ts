@@ -17,7 +17,7 @@ export class FireDbService {
   }
 
   public set(url,data){
-    this.db.object(url).set(data);
+    return this.db.object(url).set(data);
   }
 
   public listWatch(url: string){
