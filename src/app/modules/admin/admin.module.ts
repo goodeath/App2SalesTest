@@ -14,6 +14,7 @@ import { FireDbAuthService } from './../../shared/services/fire-db-auth.service'
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { AngularFireStorage } from 'angularfire2/storage';
+import { TicketComponent } from './pages/ticket/ticket.component';
 
 @NgModule({
   imports: [
@@ -27,7 +28,8 @@ import { AngularFireStorage } from 'angularfire2/storage';
   declarations: [
     HomeComponent,
     UserComponent,
-    AudioComponent
+    AudioComponent,
+    TicketComponent
   ],
   providers: [
     AngularFireDatabase,
