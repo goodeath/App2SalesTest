@@ -36,10 +36,7 @@ export class FireDbAuthService {
           console.log(res);
           return res;
         }
-      ).catch(res=>{
-        console.log(res);
-        return res;
-      });
+      ) 
     }
 
     public logout():void{
