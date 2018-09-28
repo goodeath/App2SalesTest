@@ -9,6 +9,11 @@ import { TicketComponent } from './pages/ticket/ticket.component';
 
 const routes: Routes = [
     {
+        path: '',
+        redirectTo: 'Inicio', 
+        pathMatch: 'full',
+    }, 
+    {
         path: 'Inicio',
         component: HomeComponent,data: {title:'Dashboard'}
     }, 
@@ -22,6 +27,10 @@ const routes: Routes = [
     }, 
     {
         path: 'Audios',
+        component: AudioComponent,data: {title:'Audio'}
+    }, 
+    {
+        path: 'Audios/Editar/:id',
         component: AudioComponent,data: {title:'Audio'}
     }, 
     {
