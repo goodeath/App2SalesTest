@@ -6,23 +6,26 @@
    
     <div class="form-group">
       <div class="row">
-        <div class="col col-sm-6">
+        <div class="col {{ isNew ? 'col-sm-6' : 'col-sm-12' }}">
             <input type="text" class="form-control" name="name" [(ngModel)]="name" placeholder="Nome do Arquivo">
         </div>
-        <div class="col col-sm-6">
-            <input type="file" name="file" (change)="watchFile($event)" accept=".mp3" placeholder="Repetir Senha">
+        <div class="col col-sm-6" *ngIf="isNew">
+          <label class="btn btn-default">
+            {{ fileMessage }} <input type="file" name="file" (change)="watchFile($event)" accept=".mp3" placeholder="Repetir Senha" style="display:none">
+        </label>
+            <!-- <input type="file" name="file" (change)="watchFile($event)" accept=".mp3" placeholder="Repetir Senha"> -->
         </div>
       </div>        
     </div>
   
     <div class="form-group pull-right">
-        <button type="button" (click)="save()" class="btn btn-primary float-right">Salvar</button>
+        <button type="button" (click)="save()" [disabled]='isNew ? forbidden : false' class="btn btn-primary float-right">Salvar</button>
     </div>
     
   </form>
 </mk-box>
 
-<mk-box>
+<mk-box *ngIf="isNew">
     <h5> Relatório de Áudios </h5>
     <hr>
     <table class="table">
@@ -35,15 +38,22 @@
       <tbody>
         <tr *ngFor="let audio of audios">
           <td>{{audio.date_created}}</td>
-          <td>{{audio.name}}</td>
+          <td>{{audio.title}}</td>
           <td>
-            <div *ngIf="!audio.url">
-              <i class="fa fa-volume-up" (click)="getByName(audio)"></i>
-            </div>
-            <div *ngIf="audio.url">
+            <span *ngIf="!audio.url">
+              <i class="fa fa-volume-up" style="cursor: pointer" (click)="getByName(audio)"></i>
+            </span>
+            <span *ngIf="audio.url">
                 <audio [src]="audio.url" controls></audio>
-            </div>
-            
+            </span>
+            &nbsp;
+            <span>
+                <a routerLink="/Admin/Audios/Editar/{{audio.key}}"><i class="fa fa-edit" style="color:black"></i></a>
+            </span>
+            &nbsp;
+            <span>
+              <i class="fa fa-window-close" style="cursor:pointer" (click)="rm(audio.key)"></i>
+            </span>
           </td>
         </tr>
       </tbody>
