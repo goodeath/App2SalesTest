@@ -21,6 +21,10 @@ export class FireDbService {
     });
   }
 
+  public update(data, base = '/'){
+    return this.db.object(base).update(data);
+  }
+
   public set(url,data){
     return this.db.object(url).set(data);
   }
