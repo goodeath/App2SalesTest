@@ -1,22 +1,26 @@
 <div class="row">
     <div class="col-md-3 col-xs-12">
-      <mk-box-info header="Messages" iconBackgroundColor="aqua" iconStyleClass="fa fa-envelope-o">
-        1,410
+      <mk-box-info header="Usuários" iconBackgroundColor="aqua" iconStyleClass="fa fa-user">
+        {{users == null ? 'Carregando...' : users.length}}
       </mk-box-info>
     </div>
     <div class="col-md-3 col-xs-12">
-      <mk-box-info header="Bookmarks" iconBackgroundColor="green" iconStyleClass="fa fa-flag-o">
-        410
+      <mk-box-info header="Ingressos" iconBackgroundColor="green" iconStyleClass="fa fa-ticket">
+          {{tickets == null ? 'Carregando...' : tickets.length}}
       </mk-box-info>
     </div>
     <div class="col-md-3 col-xs-12">
-      <mk-box-info header="Uploads" iconBackgroundColor="yellow" iconStyleClass="fa fa-flag-o">
-        13,648
+      <mk-box-info header="Audios" iconBackgroundColor="yellow" iconStyleClass="fa fa-volume-up">
+          {{audios == null ? 'Carregando...' : audios.length}}
       </mk-box-info>
     </div>
     <div class="col-md-3 col-xs-12">
-      <mk-box-info header="Uploads" iconBackgroundColor="red" iconStyleClass="fa fa-star-o">
+      <mk-box-info header="Vendas" iconBackgroundColor="red" iconStyleClass="fa fa-line-chart">
         93,139
       </mk-box-info>
     </div>
   </div>
+  <mk-box>
+      <app-bar-chart></app-bar-chart>
+  </mk-box>
+  

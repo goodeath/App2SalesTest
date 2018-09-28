@@ -19,6 +19,7 @@ import { HeaderComponent } from './modules/admin/components/header/header.compon
 import { SidebarComponent } from './modules/admin/components/sidebar/sidebar.component';
 import { FooterComponent } from './modules/admin/components/footer/footer.component';
 import { MainComponent } from './modules/admin/template/main/main.component';
+import { ChartsModule } from 'ng2-charts';
 
 
 @NgModule({
@@ -27,8 +28,8 @@ import { MainComponent } from './modules/admin/template/main/main.component';
     HeaderComponent,
     SidebarComponent,
     FooterComponent,
-    MainComponent,
-   
+    MainComponent,   
+
   ],
   imports: [
     ToastrModule.forRoot(), // Make toast through application.
@@ -41,7 +42,8 @@ import { MainComponent } from './modules/admin/template/main/main.component';
     LoadingPageModule, MaterialBarModule,
     BoxModule, MkBoxInfoModule,
     AdminModule,
-    AngularFireModule.initializeApp(environment.firebase)
+    AngularFireModule.initializeApp(environment.firebase),
+    ChartsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
