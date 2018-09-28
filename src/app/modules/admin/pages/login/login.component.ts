@@ -15,6 +15,14 @@ export class LoginComponent implements OnInit {
   ToastrModule
   constructor( private router: Router, private toast: ToastrService, private auth: FireDbAuthService) { }
 
+  private errors = {
+    'auth/argument-error' : 'E-mail e senha precisam estar preenchidos',
+    "auth/invalid-email" : 'E-mail inválido',
+    "auth/user-not-found" : 'Usuário não encontrado. Por favor verifique seu e-mail e senha.',
+    "auth/wrong-password" : 'Senha incorreta',
+    "auth/user-disabled" : "Usuário foi cancelado",
+  }
+
   ngOnInit() {
   }
 
@@ -26,12 +34,13 @@ export class LoginComponent implements OnInit {
          this.router.navigate(['Admin/Inicio']);
       }).catch( res => {
         console.log('lol',res);
-        this.toast.error(res.message);
+        this.toast.error(this.errors[res.code]);
          
         //  this.toast.error(res['code']);
       });
     }catch(e){
-      this.toast.error(e.message);
+      console.log(e);
+      this.toast.error(this.errors[e.code]);
     }
   }
 
