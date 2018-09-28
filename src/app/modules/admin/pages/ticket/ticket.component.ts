@@ -15,7 +15,18 @@ export class TicketComponent implements OnInit {
   public benefits = [];
   public benefit = [];
   public tickets: any[];
+  private isCreated: boolean = false;
+  private activeMenu: number = 1;
+
   constructor(private ticket: TicketService) { }
+
+  public getActiveMenu():number{
+    return this.activeMenu;
+  }
+
+  public getIsCreated():boolean{
+    return this.isCreated;
+  }
 
   ngOnInit() {
     this.list();
@@ -57,15 +68,24 @@ export class TicketComponent implements OnInit {
       
     }
 
+    private clear(){
+      this.benefits = [];
+      this.data = {
+        name:'',
+        initial_value: '',
+        final_value: ''
+      }
+    }
+
     public create(){
       this.ticket.create(this.data.name,this.data.initial_value,this.data.final_value,this.benefits).then(res=>{
-        this.benefits = [];
-        this.data = {
-          name:'',
-          initial_value: '',
-          final_value: ''
-        }
+        console.log(res);
+        this.isCreated = true;
       });
+    }
+
+    public choose(menu: number){
+      this.activeMenu = menu;
     }
 
     public list(){
@@ -74,5 +94,14 @@ export class TicketComponent implements OnInit {
         this.tickets = res;
         console.log(res);
       });
+    }
+
+
+    /**
+     * Set properties to create new ticket.
+     */
+    public newTicket(): void{
+      this.choose(1);
+      this.isCreated = false;
     }
 }
