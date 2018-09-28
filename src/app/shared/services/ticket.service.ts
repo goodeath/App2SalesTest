@@ -17,11 +17,12 @@ export class TicketService {
 
   constructor(private db: FireDbService) { }
 
-  public create(name: string, description: string, benefits: any[]){
+  public create(name: string, description: string, value: string, benefits: any[]){
     let data = {
       'name':name,
       'description':description,
-      'beneftis': benefits
+      'value': value,
+      'benefits': benefits
     };
     this.db.insert(this.url.ticket,data).then(res=>{
       return res;
