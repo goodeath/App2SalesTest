@@ -1,0 +1,82 @@
+<mk-box>
+    <h5> Cadastrar </h5>
+    <hr>
+    <form>
+   
+      <div class="form-group">
+          <input type="text" class="form-control" name="name" [(ngModel)]="data.name" placeholder="Título">
+      </div>
+      
+      <div class="form-group">
+        <div class="row">
+          <div class="col col-sm-6">
+              <input type="text" class="form-control" name="initial" [(ngModel)]="data.initial_value" placeholder="De: R$">
+          </div>
+          <div class="col col-sm-6">
+              <input type="text" class="form-control" name="final" [(ngModel)]="data.final_value" placeholder="Por: R$">
+          </div>
+        </div>        
+      </div>
+      <h4>Benefícios</h4> 
+      
+      <div class="form-group" *ngFor="let item of benefits;  index as i">
+        <div class="row" >
+          <div class="col col-sm-6">
+              <p>{{item.name}}</p>
+              
+              
+          </div>
+          <div class="col col-sm-2">
+              
+              <i class=" fa fa-window-close" (click)="remove(item,i)" style="cursor:pointer;font-size:30px;"></i>
+          </div>
+       
+        </div>
+           
+      </div>
+      <div class="form-group">
+          <div class="row">
+              <div class="col col-sm-6">
+                  <input type="text" class="form-control"  name="field[]" [(ngModel)]="benefitName"  placeholder="Benefício">
+                </div>
+          </div>
+          
+        <button type="button" class="btn-primary" (click)="addBenefit()">Adicionar</button> 
+      </div>
+      <div class="form-group">
+          <button type="button" (click)="create()" class="btn-primary float-right">Salvar</button>
+      </div>
+      
+    </form>
+  </mk-box>
+  
+  <mk-box>
+      <h5> Relatório de Ingressos </h5>
+      <hr>
+      <table class="table">
+        <thead>
+          <th>Data de Cadastro</th>
+          <th>Título</th>
+          <th>De:</th>
+          <th>Por:</th>
+          <th>Ação</th>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of tickets">
+                <td>{{item.date_created}}</td>
+                <td>{{item.name}}</td>
+                <td>R$ {{item.initial_value}}</td>
+                <td>R$ {{item.final_value}}</td>
+                <td>
+                  <!-- <a href="#"> -->
+                    <i class="fa fa-window-close"></i>&nbsp;
+                  <!-- </a> -->
+                  <!-- <a href="#"> -->
+                    <i class="fa fa-edit"></i>
+                  <!-- </a> -->
+                </td>
+              </tr>
+        </tbody>
+      </table>
+     
+    </mk-box>
