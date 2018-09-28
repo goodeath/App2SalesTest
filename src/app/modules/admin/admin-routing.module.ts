@@ -37,6 +37,10 @@ const routes: Routes = [
         path: 'Ingressos',
         component: TicketComponent,data: {title:'Ingressos'}
     }, 
+    {
+        path: 'Ingressos/Editar/:id',
+        component: TicketComponent,data: {title:'Audio'}
+    }, 
 ];
 
 @NgModule({
