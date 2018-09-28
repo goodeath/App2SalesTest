@@ -15,8 +15,8 @@
       </div>        
     </div>
   
-    <div class="form-group">
-        <button type="button" (click)="save()" class="btn-primary float-right">Salvar</button>
+    <div class="form-group pull-right">
+        <button type="button" (click)="save()" class="btn btn-primary float-right">Salvar</button>
     </div>
     
   </form>
@@ -35,7 +35,16 @@
       <tbody>
         <tr *ngFor="let audio of audios">
           <td>{{audio.date_created}}</td>
-            <td>{{audio.name}}</td>
+          <td>{{audio.name}}</td>
+          <td>
+            <div *ngIf="!audio.url">
+              <i class="fa fa-volume-up" (click)="getByName(audio)"></i>
+            </div>
+            <div *ngIf="audio.url">
+                <audio [src]="audio.url" controls></audio>
+            </div>
+            
+          </td>
         </tr>
       </tbody>
     </table>

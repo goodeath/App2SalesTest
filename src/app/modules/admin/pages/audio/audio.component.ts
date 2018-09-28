@@ -33,4 +33,10 @@ export class AudioComponent implements OnInit {
       console.log(res);
     });
   }
+
+  public getByName(audio){
+    this.audio.download(audio.name).subscribe(res=>{
+      audio.url = res;
+    })
+  }
 }

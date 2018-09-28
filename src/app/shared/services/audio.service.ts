@@ -40,4 +40,8 @@ export class AudioService {
     }
     return this.audios;
   }
+
+  public download(name: string){
+    return this.storage.download(name+'.mp3');
+  }
 }
