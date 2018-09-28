@@ -13,7 +13,12 @@ export class FireDbService {
 
   public insert(url,data){
     let list = this.db.list(url);
-    return list.push(data);
+    return list.push(data).then(res=>{
+      // console.log(res);
+      let key = res.key;
+      this.set(url + '/' + key +'/key',key);
+      return res;
+    });
   }
 
   public set(url,data){

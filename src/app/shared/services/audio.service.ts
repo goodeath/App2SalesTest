@@ -15,18 +15,28 @@ export class AudioService {
   }
 
   public upload(name: string, file: File){
-    this.storage.upload(name, file).then(res=>{
+    return this.storage.upload(name, file).then(res=>{
       console.log(res);
       let fullPath = res.ref.fullPath;
       let data = {
         date_created: moment().format('DD/MM/YYYY HH:mm:ss'),
         path: fullPath,
         name: name,
+        title: name
       };
-      this.db.insert(this.url.audio,data);
+      return this.db.insert(this.url.audio,data);
     }).catch(res => {
       console.log(res)
     })
+  }
+
+  public rm(uid: string){
+    let fullPath = this.url.audio + '/' + uid;
+    return this.db.delete(fullPath);
+  }
+
+  public update(name: string, uid:string){
+    return this.db.set(this.url.audio + '/' + uid + '/title',name);
   }
 
   public list(){
@@ -39,5 +49,9 @@ export class AudioService {
       this.audios = this.list();
     }
     return this.audios;
+  }
+
+  public download(name: string){
+    return this.storage.download(name+'.mp3');
   }
 }

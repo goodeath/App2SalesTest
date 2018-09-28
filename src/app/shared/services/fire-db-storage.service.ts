@@ -13,6 +13,10 @@ export class FireDbStorageService {
     return ref.put(file).then((snapshot)=>{
       return snapshot;
     })
+    
+  }
 
+  public download (name: string){
+    return this.db.ref('audios/'+name).getDownloadURL();
   }
 }
