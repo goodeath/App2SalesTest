@@ -9,7 +9,8 @@ import { MomentModule } from 'ngx-moment';
 import { HomeComponent } from './pages/home/home.component';
 import { UserComponent } from './pages/user/user.component';
 import { AudioComponent } from './pages/audio/audio.component';
-
+import { BarChartComponent } from './../../shared/components/bar-chart/bar-chart.component';
+import { ChartsModule } from 'ng2-charts/ng2-charts';
 import { FireDbAuthService } from './../../shared/services/fire-db-auth.service';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFireDatabase } from 'angularfire2/database';
@@ -18,6 +19,7 @@ import { TicketComponent } from './pages/ticket/ticket.component';
 
 @NgModule({
   imports: [
+    ChartsModule,
     MomentModule,
     FormsModule,
     CommonModule,
@@ -29,7 +31,8 @@ import { TicketComponent } from './pages/ticket/ticket.component';
     HomeComponent,
     UserComponent,
     AudioComponent,
-    TicketComponent
+    TicketComponent,
+    BarChartComponent
   ],
   providers: [
     AngularFireDatabase,
