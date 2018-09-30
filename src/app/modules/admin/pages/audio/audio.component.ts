@@ -3,6 +3,7 @@ import { AudioService } from './../../../../shared/services/audio.service';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash';
+import { LoadingService } from '../../../../shared/services/loading.service';
 @Component({
   selector: 'app-audio',
   templateUrl: './audio.component.html',
@@ -21,7 +22,8 @@ export class AudioComponent implements OnInit {
     private audio: AudioService, 
     private toastr: ToastrService,
     private route: ActivatedRoute,
-    private router: Router) { }
+    private router: Router,
+    private loading: LoadingService) { }
 
   ngOnInit() {
     let id = this.route.snapshot.paramMap.get('id');
@@ -55,19 +57,41 @@ export class AudioComponent implements OnInit {
       }
       
       this.file = event.target.files[0];
+      this.name = (!this.name) ?  event.target.files[0].name : this.name;
     }
   }
   public save(){
-    if(this.isNew)
+    let open = this.loading.open("Enviando arquivo de áudio");
+    console.log(open);
+    if(this.isNew){
       this.audio.upload(this.name,this.file).then(res=>{
         this.name = '';
         this.file = null;
         this.clearFile();
+        open.finish();
         console.log(res);
       })
+      let upt = 
+      this.audio.getPercent().subscribe(res=>{
+        console.log(res);
+        let text = "Enviando arquivo de áudio... " + Math.round(res*100)/100 + '%';
+        text = this.loading.getTemplate(text);
+        // setTimeout(()=>{
+          
+        //   console.log(text);
+        //   open.updateOption('loadingHtml', text);
+        // },1000)
+        setTimeout(()=>{
+          open.updateOption('loadingHtml',text);
+        },2000)
+        
+
+      })
+    }
     else
       this.audio.update(this.name,this.id).then(res=>{
         console.log(res);
+        open.finish();
         this.router.navigate(['/Admin/Audios']);
       });
     console.log(this.file);
@@ -75,6 +99,7 @@ export class AudioComponent implements OnInit {
   }
 
   public list(){
+    let open = this.loading.open("Listando arquivos de áudio");
     console.log(this.audio.getAudios());
     this.audio.getAudios().subscribe(res=>{
       this.audios = res;
@@ -82,6 +107,7 @@ export class AudioComponent implements OnInit {
         let data = _.find(this.audios,(o)=>o.key == this.id)
         this.name = data.name;
       }
+      open.finish();
       console.log(res);
     });
   }
@@ -93,8 +119,10 @@ export class AudioComponent implements OnInit {
   }
 
   public rm(uid: string){
+    let open = this.loading.open("Removendo arquivo de áudio");
     this.audio.rm(uid).then(res=>{
       console.log(res);
+      open.finish();
     })
   }
 }
