@@ -19,6 +19,7 @@ import { HeaderComponent } from './modules/admin/components/header/header.compon
 import { SidebarComponent } from './modules/admin/components/sidebar/sidebar.component';
 import { FooterComponent } from './modules/admin/components/footer/footer.component';
 import { MainComponent } from './modules/admin/template/main/main.component';
+import { BarChartComponent } from './shared/components/bar-chart/bar-chart.component';
 import { ChartsModule } from 'ng2-charts';
 
 
@@ -45,7 +46,7 @@ import { ChartsModule } from 'ng2-charts';
     AngularFireModule.initializeApp(environment.firebase),
     ChartsModule
   ],
-  providers: [],
+  providers: [BarChartComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
