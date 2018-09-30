@@ -1,0 +1,58 @@
+<mk-box>
+  <h5> Cadastrar </h5>
+  <hr>
+  <form>
+ 
+    <div class="form-group">
+        <input type="text" class="form-control" name="name" [(ngModel)]="data.name" placeholder="Nome do usuário">
+    </div>
+    <div class="form-group">
+        <input type="text" class="form-control" name="email" [(ngModel)]="data.email" [readonly]="!isNew" placeholder="E-mail">
+    </div>
+    
+    <div class="form-group">
+      <div class="row">
+        <div class="col col-sm-6">
+            <input type="text" class="form-control" name="password" value="" [readonly]="!isNew" [(ngModel)]="password" placeholder="Senha">
+        </div>
+        <div class="col col-sm-6">
+            <input type="text" class="form-control" name="confirm_password" [readonly]="!isNew" [(ngModel)]="confirm_password" placeholder="Repetir Senha">
+        </div>
+      </div>        
+    </div>
+  
+    <div class="form-group pull-right">
+        <button type="button" (click)="save()" class="btn btn-primary">Salvar</button>
+    </div>
+    
+  </form>
+</mk-box>
+
+<mk-box *ngIf="isNew">
+    <h5> Relatório de Usuários </h5>
+    <hr>
+    <table class="table">
+      <thead>
+        <th>Data de Cadastro</th>
+        <th>Nome</th>
+        <th>E-mail</th>
+        <th>Ação</th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of users">
+          <td>{{user.date_created}}</td>
+          <td>{{user.name}}</td>
+          <td>{{user.email}}</td>
+          <td>
+            <!-- <a href="#"> -->
+              <i class="fa fa-window-close" style="cursor:pointer" (click)="rm(user.key)"></i>&nbsp;
+            <!-- </a> -->
+            <!-- <a href="#"> -->
+              <a routerLink="/Admin/Usuarios/Editar/{{user.key}}"><i class="fa fa-edit" style="color:black"></i></a>
+            <!-- </a> -->
+          </td>
+        </tr>
+      </tbody>
+    </table>
+   
+  </mk-box>
