@@ -54,4 +54,8 @@ export class AudioService {
   public download(name: string){
     return this.storage.download(name+'.mp3');
   }
+
+  public getPercent():Observable<number>{
+    return this.storage.uploadPercent;
+  }
 }
