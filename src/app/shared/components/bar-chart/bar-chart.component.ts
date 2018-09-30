@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-
+import { Component, OnInit, Input } from '@angular/core';
+import * as moment from 'moment'
+import * as _ from 'lodash';
+import { FireDbService } from '../../services/fire-db.service';
 @Component({
   selector: 'app-bar-chart',
   templateUrl: './bar-chart.component.html',
@@ -7,22 +9,41 @@ import { Component, OnInit } from '@angular/core';
 })
 export class BarChartComponent implements OnInit {
 
-  constructor() { }
-
-  ngOnInit() {
+  constructor(private db: FireDbService) { }
+  public listData(){
+    let $this = this;
+    let year = moment().format("YYYY");
+    this.db.listWatch('/tickets_sell').valueChanges().subscribe(res=>{
+        console.log(res);
+        console.log(_.keys(res[0]));
+        let graph = {
+          'keys': _.keys(res[0]),
+          'values': _.values(res[0]),
+        }
+        let clone = JSON.parse(JSON.stringify(this.barChartLabels));
+        clone[0] = graph.keys;
+        
+        this.barChartLabels = clone;
+        this.randomize(graph.values);
+    })
   }
+  ngOnInit() {
+    this.listData()
+  }
+  @Input()
+  public customData: any;
 
   public barChartOptions:any = {
     scaleShowVerticalLines: false,
     responsive: true
   };
-  public barChartLabels:string[] = ['2006', '2007', '2008', '2009', '2010', '2011', '2012'];
+  public barChartLabels:string[] = ['04', '05', '06', '07', '08', '09'];
   public barChartType:string = 'bar';
   public barChartLegend:boolean = true;
  
   public barChartData:any[] = [
-    {data: [65, 59, 80, 81, 56, 55, 40], label: 'Series A'},
-    {data: [28, 48, 40, 19, 86, 27, 90], label: 'Series B'}
+    {data: [65, 59, 80, 81, 56, 55, 40], label: 'Valor em R$'},
+    // {data: [28, 48, 40, 19, 86, 27, 90], label: 'Series B'}
   ];
  
   // events
@@ -34,8 +55,9 @@ export class BarChartComponent implements OnInit {
     console.log(e);
   }
  
-  public randomize():void {
+  public randomize(dat = []):void {
     // Only Change 3 values
+   
     let data = [
       Math.round(Math.random() * 100),
       59,
@@ -44,6 +66,8 @@ export class BarChartComponent implements OnInit {
       56,
       (Math.random() * 100),
       40];
+      data = (dat) ? dat : data;
+      console.log(dat,data);
     let clone = JSON.parse(JSON.stringify(this.barChartData));
     clone[0].data = data;
     this.barChartData = clone;
