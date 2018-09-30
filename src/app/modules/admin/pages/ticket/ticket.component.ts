@@ -3,6 +3,7 @@ import { TicketService } from './../../../../shared/services/ticket.service';
 import * as _ from 'lodash';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, Router } from '@angular/router';
+import { LoadingService } from '../../../../shared/services/loading.service';
 
 @Component({
   selector: 'app-ticket',
@@ -30,7 +31,8 @@ export class TicketComponent implements OnInit {
     private ticket: TicketService, 
     private toastr: ToastrService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private loading: LoadingService
   ) { }
 
   public getActiveMenu():number{
@@ -100,12 +102,14 @@ export class TicketComponent implements OnInit {
     }
 
     public create(){
+      let open = this.loading.open("Criando ingresso...");
       if(this.isNew){
         this.ticket.create(this.data.name,this.data.initial_value,this.data.final_value,this.benefits).then(ref=>{
           console.log(ref);
           this.isCreated = true;
           this.key = ref.key;
           this.clear();
+          open.finish();
         });
       } else {
         this.ticket.update(this.id, this.data.name,this.data.initial_value,this.data.final_value,this.benefits).then(ref=>{
@@ -113,6 +117,7 @@ export class TicketComponent implements OnInit {
           this.isCreated = true;
           // this.key = ref.key;
           this.clear();
+          open.finish();
         });
       }
     }
@@ -122,6 +127,7 @@ export class TicketComponent implements OnInit {
     }
 
     public list(){
+      let open = this.loading.open("Listando ingresso(s)...");
       console.log(this.ticket.getTickets());
       this.ticket.getTickets().subscribe(res=>{
         this.tickets = res;
@@ -129,6 +135,7 @@ export class TicketComponent implements OnInit {
           this.data = _.find(this.tickets,(o)=>o.key == this.id)
           this.benefits = this.data['benefits'];
         }
+        open.finish();
         console.log(res);
       });
     }
@@ -181,16 +188,19 @@ export class TicketComponent implements OnInit {
     }
 
     public createSchedule(){
+      let open = this.loading.open("Criando agenda...");
       console.log(this.scheduleItems);
       let groupByDay = _.groupBy(this.scheduleItems,'day');
       if(this.isNew){
         this.ticket.createSchedule(this.key,groupByDay).then(res=>{
           this.setNewTicketWindow();
+          open.finish();
         });
       } else {
         
         this.ticket.updateSchedule(this.id,groupByDay).then(res=>{
           this.setNewTicketWindow();
+          open.finish();
           this.router.navigate(['/Admin/Ingressos']);
         })
       }
@@ -198,7 +208,9 @@ export class TicketComponent implements OnInit {
     }
 
     public rm(uid: string){
+      let open = this.loading.open("Apagando Ingresso...");
       this.ticket.rm(uid).then(res=>{
+        open.finish();
         console.log(res);
       })
     }
