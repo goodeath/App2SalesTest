@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash';
+import { LoadingService } from '../../../../shared/services/loading.service';
 @Component({
   selector: 'app-user',
   templateUrl: './user.component.html',
@@ -26,7 +27,8 @@ export class UserComponent implements OnInit {
     private user: UserService, 
     private toastr: ToastrService,
     private route: ActivatedRoute,
-    private router: Router) { }
+    private router: Router,
+    private loading: LoadingService) { }
 
   ngOnInit() {
     let id = this.route.snapshot.paramMap.get('id');
@@ -56,6 +58,7 @@ export class UserComponent implements OnInit {
     if(this.password){
       this.data.password = this.password;
     }
+    
     if(this.isNew)
       this.create();
     else
@@ -63,7 +66,9 @@ export class UserComponent implements OnInit {
   }
 
   public update(){
+    let load = this.loading.open("Atualizando Usuário");
     this.user.update(this.data,this.id).then(res=>{
+      load.finish();
       this.isNew = true;
       this.id = null;
       this.router.navigate(['/Admin/Usuarios']);
@@ -73,14 +78,16 @@ export class UserComponent implements OnInit {
   public create(){
     // console.log(this.user.getUsers());
     
-      
+    let load = this.loading.open("Cadastrando Usuário...");
       this.user.add(this.data).then(res=>{
         let error= this.user.getError();
         console.log(error);
         if(error ){
+          load.finish();
           this.toastr.error(error);
           return ;
         } else {
+          load.finish();
           this.clear();
           this.toastr.success('Usuário criado com sucesso');
         }
@@ -99,12 +106,15 @@ export class UserComponent implements OnInit {
   }
 
   public list(){
+    let load = this.loading.open("Recuperando Usuário(s)...");
     console.log(this.user.getUsers());
     this.user.getUsers().subscribe(res=>{
+      
       this.users = res;
       if(!this.isNew)
         this.data = _.find(this.users,(o)=>o.key == this.id)
       delete(this.password);
+      load.finish()
       console.log(res);
     });
   }
