@@ -31,7 +31,20 @@ export class AudioService {
   }
 
   public rm(uid: string){
+    
     let fullPath = this.url.audio + '/' + uid;
+    let audio = this.db.read(fullPath + '/' + 'path').valueChanges();
+    audio.subscribe(res=>{
+      res = res;
+      console.log(res);
+      if(res)
+        this.storage.delete(res + "");
+      else
+        console.log("Subscribe without needs");
+      // this.storage.
+      // res.path;
+      
+    });
     return this.db.delete(fullPath);
   }
 
