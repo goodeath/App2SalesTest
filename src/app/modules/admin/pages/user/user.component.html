@@ -13,10 +13,10 @@
     <div class="form-group">
       <div class="row">
         <div class="col col-sm-6">
-            <input type="text" class="form-control" name="password" value="" [readonly]="!isNew" [(ngModel)]="password" placeholder="Senha">
+            <input type="password" class="form-control" name="password" value="" *ngIf="isNew" [(ngModel)]="password" placeholder="Senha">
         </div>
         <div class="col col-sm-6">
-            <input type="text" class="form-control" name="confirm_password" [readonly]="!isNew" [(ngModel)]="confirm_password" placeholder="Repetir Senha">
+            <input type="password" class="form-control" name="confirm_password" *ngIf="isNew" [(ngModel)]="confirm_password" placeholder="Repetir Senha">
         </div>
       </div>        
     </div>
