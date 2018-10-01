@@ -40,9 +40,14 @@ export class BarChartComponent implements OnInit {
   public barChartLabels:string[] = ['04', '05', '06', '07', '08', '09'];
   public barChartType:string = 'bar';
   public barChartLegend:boolean = true;
+  public barChartColors = [{
+    backgroundColor: '#3c8dbc',
+    borderColor: '#1c8dbc',
+    pointHoverBackgroundColor: '#ebf4f9',
+  }]
  
   public barChartData:any[] = [
-    {data: [65, 59, 80, 81, 56, 55, 40], label: 'Valor em R$'},
+    {data: [65, 59, 80, 81, 56, 55, 40], label: 'Faturamento em R$'},
     // {data: [28, 48, 40, 19, 86, 27, 90], label: 'Series B'}
   ];
  
