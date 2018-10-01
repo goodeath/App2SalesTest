@@ -1,3 +1,4 @@
+ 
 <mk-box *ngIf="getActiveMenu() == 1 && !getIsCreated()">
     
     <h4>Cadastrar</h4> 
@@ -5,16 +6,16 @@
     <form>
    
       <div class="form-group">
-          <input type="text" class="form-control" name="name" [(ngModel)]="data.name" placeholder="Título">
+          <input type="text" id="name" class="form-control" name="name" [(ngModel)]="data.name" placeholder="Título">
       </div>
       
       <div class="form-group">
         <div class="row">
           <div class="col col-sm-6">
-              <input type="text" class="form-control" name="initial" [(ngModel)]="data.initial_value" placeholder="De: R$">
+              <input type="text" class="form-control" currencyMask id="from" name="initial" [(ngModel)]="data.initial_value" [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }" placeholder="De: R$">
           </div>
           <div class="col col-sm-6">
-              <input type="text" class="form-control" name="final" [(ngModel)]="data.final_value" placeholder="Por: R$">
+              <input type="text" class="form-control" currencyMask id="to" name="final" [(ngModel)]="data.final_value" [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }" placeholder="Por: R$">
           </div>
         </div>        
       </div>
@@ -26,7 +27,7 @@
           <div class="col col-sm-4">&nbsp;</div>
           <div class="col col-sm-4">
               <div class="col col-sm-6 text-center">
-                <span>{{item.name}}</span>
+                <span><i class="fa fa-star"></i> &nbsp; {{item.name}}</span>
               </div>
               <div class="col col-sm-6">
               
@@ -105,12 +106,15 @@
         <div class="form-group">
           <div class="row">
             <div class="col col-sm-2">
-                <input type="text" class="form-control" name="initial" [(ngModel)]="scheduleData.day" placeholder="Dia">
+                <input type="text" class="form-control" name="initial" bsDatepicker [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" [(ngModel)]="scheduleData.day" placeholder="Dia">
             </div>
-            <div class="col col-sm-4">
+            <div class="col col-sm-2" style="margin-top:-1.7em;">
+                <timepicker name="myTime" [(ngModel)]="myTime" [showMeridian]="false" ></timepicker>
+            </div>
+            <div class="col col-sm-3">
                 <input type="text" class="form-control" name="final" [(ngModel)]="scheduleData.title" placeholder="Título">
             </div>
-            <div class="col col-sm-6">
+            <div class="col col-sm-5">
                 <input type="text" class="form-control" name="final" [(ngModel)]="scheduleData.description" placeholder="Descrição">
             </div>
           </div>        
@@ -124,12 +128,16 @@
           <th>Dia</th>
           <th>Título</th>
           <th>Descrição</th>
+          <th>Ação</th>
         </thead>
         <tbody>
-          <tr *ngFor="let item of scheduleItems">
-            <td>{{item.day}}</td>
+          <tr *ngFor="let item of scheduleItems; index as i">
+            <td>{{item.day}} {{item.hour}}</td>
             <td>{{item.title}}</td>
             <td>{{item.description}}</td>
+            <td>
+                <i class=" fa fa-window-close" (click)="remove2(item,i)" style="cursor:pointer;font-size:17px;"></i>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -216,3 +224,4 @@
       </table>
      
     </mk-box>
+   

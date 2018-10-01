@@ -1,9 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { TicketService } from './../../../../shared/services/ticket.service';
 import * as _ from 'lodash';
+import * as $ from 'jquery';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LoadingService } from '../../../../shared/services/loading.service';
+import { moment } from 'ngx-bootstrap/chronos/test/chain';
+
+
 
 @Component({
   selector: 'app-ticket',
@@ -11,6 +15,7 @@ import { LoadingService } from '../../../../shared/services/loading.service';
   styleUrls: ['./ticket.component.css']
 })
 export class TicketComponent implements OnInit {
+  @ViewChild('dp') el:ElementRef;
   public data = {
     name:'',
     initial_value: '',
@@ -26,7 +31,7 @@ export class TicketComponent implements OnInit {
   private isCreated: boolean = false;
   private activeMenu: number = 1;
   private key: string;
-
+  public myTime: string;
   constructor(
     private ticket: TicketService, 
     private toastr: ToastrService,
@@ -44,6 +49,7 @@ export class TicketComponent implements OnInit {
   }
 
   ngOnInit() {
+    // console.log($("#from"))
     let id = this.route.snapshot.paramMap.get('id');
     if(id){
       this.isNew = false;
@@ -89,6 +95,12 @@ export class TicketComponent implements OnInit {
     public remove(item,i){
       console.log(i,this.benefits);;
       this.benefits.splice(i,1);
+      
+    }
+
+    public remove2(item,i){
+      console.log(i,this.benefits);;
+      this.scheduleItems.splice(i,1);
       
     }
 
@@ -183,23 +195,32 @@ export class TicketComponent implements OnInit {
     }
 
     public addSchedule(){
+      console.log(this.scheduleData);
+      let day = moment(this.scheduleData['day']).format("DD-MM-YYYY");
+      this.scheduleData['day'] = day;
+      this.scheduleData['hour'] = moment(this.myTime).format("HH:mm");
+      
       this.scheduleItems.push(this.scheduleData);
+      
       this.scheduleData = {};
     }
 
     public createSchedule(){
+      this.scheduleData = {};
       let open = this.loading.open("Criando agenda...");
       console.log(this.scheduleItems);
       let groupByDay = _.groupBy(this.scheduleItems,'day');
       if(this.isNew){
         this.ticket.createSchedule(this.key,groupByDay).then(res=>{
           this.setNewTicketWindow();
+          this.scheduleItems = [];
           open.finish();
         });
       } else {
         
         this.ticket.updateSchedule(this.id,groupByDay).then(res=>{
           this.setNewTicketWindow();
+          this.scheduleItems = [];
           open.finish();
           this.router.navigate(['/Admin/Ingressos']);
         })
@@ -213,5 +234,10 @@ export class TicketComponent implements OnInit {
         open.finish();
         console.log(res);
       })
+    }
+
+    public ngAfterViewInit(){
+      // console.log(this.el,$("#name"),window,$);
+      // $(this.el.nativeElement).datepicker({});
     }
 }
