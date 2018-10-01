@@ -24,4 +24,10 @@ export class FireDbStorageService {
   public download (name: string){
     return this.db.ref('audios/'+name).getDownloadURL();
   }
+
+  public delete(path: string){
+    return this.db.ref(path).delete().subscribe(res=>{
+      console.log(res);
+    });
+  }
 }
