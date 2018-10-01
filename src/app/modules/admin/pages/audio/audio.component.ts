@@ -4,6 +4,8 @@ import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash';
 import { LoadingService } from '../../../../shared/services/loading.service';
+
+import * as types from 'gijgo'
 @Component({
   selector: 'app-audio',
   templateUrl: './audio.component.html',
@@ -14,6 +16,7 @@ export class AudioComponent implements OnInit {
   public file: File;
   public name: string;
   public audios: any[];
+  public names: string[];
   public forbidden:boolean = true;
   public isNew:boolean = true;
   public fileMessage = 'Escolher arquivo de áudio (.mp3)';
@@ -61,6 +64,12 @@ export class AudioComponent implements OnInit {
     }
   }
   public save(){
+    console.log(_,this.names);
+    if(_.find(this.names, (o)=> {return o == this.name})){
+      this.toastr.error("Há um arquivo com este nome. Por favor, escolha outro nome");
+      return ;
+    }
+    
     let open = this.loading.open("Enviando arquivo de áudio");
     console.log(open);
     if(this.isNew){
@@ -107,6 +116,8 @@ export class AudioComponent implements OnInit {
         let data = _.find(this.audios,(o)=>o.key == this.id)
         this.name = data.name;
       }
+      this.names = _.flatMap(this.audios,(o)=>o.name);
+      console.log(this.names);
       open.finish();
       console.log(res);
     });
