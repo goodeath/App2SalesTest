@@ -10,7 +10,8 @@ import { AngularFireModule } from 'angularfire2/index';
 import { FormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
+import { BsDatepickerModule } from 'ngx-bootstrap';
+ 
 import { environment } from './../environments/environment';
 
 import { AppComponent } from './app.component';
@@ -29,10 +30,13 @@ import { ChartsModule } from 'ng2-charts';
     HeaderComponent,
     SidebarComponent,
     FooterComponent,
-    MainComponent,   
+    MainComponent,
+
 
   ],
   imports: [
+    
+    BsDatepickerModule.forRoot(),
     ToastrModule.forRoot(), // Make toast through application.
     BrowserAnimationsModule, // Toastr Animations
     FormsModule,
