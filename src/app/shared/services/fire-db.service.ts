@@ -33,6 +33,10 @@ export class FireDbService {
     return this.db.object(url).remove();
   }
 
+  public read(url){
+    return this.db.object(url);
+  }
+
   public listWatch(url: string){
     return this.db.list(url);
     // this.db.list(url).snapshotChanges().pipe(
